@@ -9,24 +9,30 @@ import Animations from './modules/animations/animations';
 import Support from './modules/support/support';
 
 export default class settings extends React.Component {
-    settingsUpdate (key, value) {
-        const data = {key: key, value: value};
-        Wix.Settings.triggerSettingsUpdatedEvent(data);
-        console.log(data);
+    constructor() {
+        super()
+        this.state = {}
+        this.settingsUpdate = this.settingsUpdate.bind(this);
     }
 
-    render () {
+    settingsUpdate(key, value) {
+        const data = { key: key, value: value }
+        Wix.Settings.triggerSettingsUpdatedEvent(data)
+        console.log(data)
+        Wix.Data.Public.set(
+            'adCode' + Wix.Utils.getCompId(),
+            { code: value },
+            { scope: 'COMPONENT' },
+            function (data) { },
+            function (f) { }
+        )
+    }
+
+    render() {
         return (
             <UI.appSettings>
                 <UI.panelTabs defaultTabIndex={0}>
-                    <Main tab="Main"/>
-                    <Settings tab="Settings" onUpdate={this.settingsUpdate}/>
-                    <Layout tab="Layout" onUpdate={this.settingsUpdate}/>
-                    <Design tab="Design" onUpdate={this.settingsUpdate}/>
-                    <Animations tab="Animations" onUpdate={this.settingsUpdate}/>
-                    <hr className="divider-short"/>
-                    <Support tab="Support"/>
-                    <UI.button label="Upgrade" className="btn-upgrade-nav" onClick={() => Wix.Settings.openBillingPage()}/>
+                    <Settings tab="Settings" onUpdate={this.settingsUpdate} />
                 </UI.panelTabs>
             </UI.appSettings>
         )
