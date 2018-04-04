@@ -23,8 +23,8 @@ export default class settings extends React.Component {
             'adCode' + Wix.Utils.getCompId(),
             { code: value },
             { scope: 'COMPONENT' },
-            function (data) { },
-            function (f) { }
+            function (data) { console.log('-- settings data acceped') },
+            function (f) { console.log('--settings data error')}
         )
     }
 
