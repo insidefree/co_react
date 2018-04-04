@@ -18,14 +18,16 @@ export default class settings extends React.Component {
     settingsUpdate(key, value) {
         const data = { key: key, value: value }
         Wix.Settings.triggerSettingsUpdatedEvent(data)
-        console.log(data)
+        console.log('--settings data', data)
+
         Wix.Data.Public.set(
             'adCode' + Wix.Utils.getCompId(),
             { code: value },
             { scope: 'COMPONENT' },
             function (data) { console.log('-- settings data acceped') },
-            function (f) { console.log('--settings data error')}
+            function (f) { console.log('--settings data error', f)}
         )
+        console.log('--settings key', 'adCode' + Wix.Utils.getCompId())
     }
 
     render() {

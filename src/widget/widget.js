@@ -29,9 +29,16 @@ define(['react', 'Wix'], function (React, Wix) {
                 textFieldContent: update.key === 'settings_textFieldContent' ? update.value : this.state.textFieldContent,
             }, this.updateCompHeight)
 
+//             Wix.Data.Public.get(
+//                 'settings_textAreaContent',
+//                 {scope: 'COMPONENT'},
+//                 data=> {
+//                     console.log('-- data function', Wix.Utils.getViewMode())
+//                 },
+//                 error=> console.log('--widget get error', error)            
+// )
 
-
-            // if (update.key === 'settings_textAreaContent') {
+            if (update.key === 'settings_textAreaContent') {
             //     if (WixSDK.Utils.getViewMode() == 'site') {
             //         // <script async src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
             //         var getSrc = /<script.*?src="(.*?)"/
@@ -42,8 +49,18 @@ define(['react', 'Wix'], function (React, Wix) {
             //         console.log(scriptAdsByGoogle)
             //         document.getElementsByTagName('head')[0].appendChild(scriptAdsByGoogle)
             //     }
+                console.log('--value', update.value.length)
+                var script = document.createElement('script')
+                script.innerHTML = update.value
+                document.getElementsByTagName('head')[0].appendChild(script)
 
+                if (Wix.Utils.getViewMode() === 'site'){
+                        console.log('--site', document)
+                        var script2 = document.createElement('script')
+                        script2.innerHTML = update.value
+                        document.getElementsByTagName('head')[0].appendChild(script2)
 
+                }
                 //     /* 
                 //         <script>
                 //             (adsbygoogle = window.adsbygoogle || []).push({
@@ -74,7 +91,7 @@ define(['react', 'Wix'], function (React, Wix) {
                 //     const scriptContent = document.createElement('script')
                 //     scriptContent.appendChild(document.createTextNode(content))
                 //     document.getElementsByTagName('head')[0].appendChild(scriptContent)
-            // }
+            }
 
             if (update.key === 'ads') {
                 /* 
@@ -85,7 +102,7 @@ define(['react', 'Wix'], function (React, Wix) {
                     data-ad-format="auto">
                 </ins>
                 */
-                document.getElementById('ads').innerHTML = update.value
+                // document.getElementById('ads').innerHTML = update.value
             }
 
         },
@@ -111,7 +128,7 @@ define(['react', 'Wix'], function (React, Wix) {
                 <div>
                     <div className="wix-style-sample">
                         <h3 className="sample-element sample-title">{textFieldContent}</h3>
-                        <div id="ads"></div>
+                        <div id="ads">{Wix.Utils.getViewMode()}</div>
                     </div>
                 </div>
             )
