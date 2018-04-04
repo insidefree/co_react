@@ -2,22 +2,27 @@ import UI from 'editor-ui-lib';
 import React from 'react'
 
 export default class Settings extends React.Component {
-    render () {
+    render() {
         return (
             <div>
                 <UI.textInput
-                    title="Title"
+                    placeholder="Title"
                     defaultText="Title"
-                    onChange={(newVal)=>this.props.onUpdate('settings_textFieldContent', newVal)}/>
+                    onChange={(newVal) => this.props.onUpdate('settings_textFieldContent', newVal)} />
 
-                  <hr className="divider-long"/>
+                <hr className="divider-long" />
 
                 <UI.textInput
                     isMultiLine={true}
-                    title="Script area"
-                    focus={true}
-                    defaultText="Paragraph"
-                    onChange={(newVal)=>this.props.onUpdate('settings_textAreaContent', newVal)}/>
+                    title="google_ad_client"
+                    placeholder="place the code of ads here..."
+                    onChange={(newVal) => this.props.onUpdate('settings_textAreaContent', newVal)} />
+
+                <UI.textInput
+                    isMultiLine={true}
+                    title="ads"
+                    placeholder="Place your ads here..."
+                    onChange={(newVal) => this.props.onUpdate('ads', newVal)} />
             </div>
         )
     }

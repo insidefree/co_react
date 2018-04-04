@@ -5,13 +5,13 @@ define(['react', 'Wix'], function (React, Wix) {
                 settingsUpdate: {},
                 showBox: false,
                 textFieldContent: 'Title',
-                textAreaContent: 'Script Area'
+                textAreaContent: 'Script Area',
+                ads: ''
             }
         },
         componentDidMount: function () {
             this.updateCompHeight(400);
             Wix.addEventListener(Wix.Events.SETTINGS_UPDATED, (data) => this.onSettingsUpdate(data));
-
             // You can get the style params programmatically, un-comment the following snippet to see how it works:
             // Wix.Styles.getStyleParams(function (style) {
             //     console.log(style);
@@ -30,11 +30,41 @@ define(['react', 'Wix'], function (React, Wix) {
             }, this.updateCompHeight)
 
             if (update.key === 'settings_textAreaContent') {
-                const script = document.createElement('script')
-                script.appendChild(document.createTextNode(update.value))
-            } 
-            
-            console.log('settingsUpdate', this.state)
+                // <script async src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                var getSrc = /<script.*?src="(.*?)"/
+                var src = getSrc.exec(update.value)
+                const scriptAdsByGoogle = document.createElement('script')
+                scriptAdsByGoogle.async = 'async'
+                scriptAdsByGoogle.src = src[1]
+                document.getElementsByTagName('head')[0].appendChild(scriptAdsByGoogle)
+
+                /* 
+                    <script>
+                        (adsbygoogle = window.adsbygoogle || []).push({
+                        google_ad_client: "ca-pub-4781162476058829",
+                        enable_page_level_ads: true
+                        });
+                    </script>
+                */
+
+                var content = update.value.split('<script>')[1].split('</script>')[0]
+                const scriptContent = document.createElement('script')
+                scriptContent.appendChild(document.createTextNode(content))
+                document.getElementsByTagName('head')[0].appendChild(scriptContent)
+            }
+
+            if (update.key === 'ads') {
+                /* 
+                <ins class="adsbygoogle"
+                    style="display:block"
+                    data-ad-client="ca-pub-4781162476058829"
+                    data-ad-slot="3562182514"
+                    data-ad-format="auto">
+                </ins>
+                */
+                document.getElementById('ads').innerHTML = update.value
+            }
+
         },
         updateCompHeight: (height) => {
             const desiredHeight = height || document.documentElement.scrollHeight;
@@ -58,7 +88,7 @@ define(['react', 'Wix'], function (React, Wix) {
                 <div>
                     <div className="wix-style-sample">
                         <h3 className="sample-element sample-title">{textFieldContent}</h3>
-                        <div className="sample-element sample-input">{textAreaContent}</div>
+                        <div id="ads"></div>
                     </div>
                 </div>
             )
